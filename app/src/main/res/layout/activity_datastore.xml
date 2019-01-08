@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/datastore_tv"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp"
+        android:textSize="22sp"
+        android:textColor="#895566"/>
+
+    <Button
+        android:id="@+id/btn_file_store"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="文件存储"/>
+
+    <EditText
+        android:id="@+id/et_sp_activity_datastore"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:hint="请输入sp存储的值"/>
+
+    <Button
+        android:id="@+id/btn_sp_store"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="SharedPreference存储"/>
+
+    <Button
+        android:id="@+id/btn_sp_get"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="SharedPreference获取"/>
+
+    <Button
+        android:id="@+id/btn_sqlite_store"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="Sqlite数据存储"/>
+
+    <Button
+        android:id="@+id/btn_sqlite_get"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:text="Sqlite数据获取"/>
+    <TextView
+        android:id="@+id/tv_activity_datastore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
