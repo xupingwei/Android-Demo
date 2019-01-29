@@ -1,10 +1,9 @@
 package example.leo.com.androiddemo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -14,7 +13,9 @@ import java.util.List;
 import adapter.MainAdapter;
 import example.leo.com.androiddemo.view.AnimationActivity;
 import example.leo.com.androiddemo.view.DataStoreActivity;
+import example.leo.com.androiddemo.view.MapLocationActivity;
 import example.leo.com.androiddemo.view.MultimediaActivity;
+import example.leo.com.androiddemo.view.NetworkActivity;
 import example.leo.com.androiddemo.view.SensorMangerActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initData();
-        adapter = new MainAdapter(MainActivity.this,contentData);
+        adapter = new MainAdapter(example.leo.com.androiddemo.MainActivity.this,contentData);
         lvActivityMain.setAdapter(adapter);
         lvActivityMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -48,22 +49,22 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     //数据存储
                     case 2:
-                        intent = new Intent(MainActivity.this,DataStoreActivity.class);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,DataStoreActivity.class);
                         startActivity(intent);
                         break;
                     //网络编程
                     case 3:
-//                        intent = new Intent(MainActivity.this,NetworkActivity.class);
-//                        startActivity(intent);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,NetworkActivity.class);
+                        startActivity(intent);
                         break;
                     //绘画动画
                     case 4:
-                        intent = new Intent(MainActivity.this,AnimationActivity.class);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,AnimationActivity.class);
                         startActivity(intent);
                         break;
                     //多媒体开发
                     case 5:
-                        intent = new Intent(MainActivity.this,MultimediaActivity.class);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,MultimediaActivity.class);
                         startActivity(intent);
                         break;
                     //系统API
@@ -73,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     //地图定位
                     case 7:
-//                        intent = new Intent(MainActivity.this,MapLocationActivity.class);
-//                        startActivity(intent);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,MapLocationActivity.class);
+                        startActivity(intent);
                         break;
                     //SensorManger
                     case 8:
-                        intent = new Intent(MainActivity.this,SensorMangerActivity.class);
+                        intent = new Intent(example.leo.com.androiddemo.MainActivity.this,SensorMangerActivity.class);
                         startActivity(intent);
                         break;
                 }
