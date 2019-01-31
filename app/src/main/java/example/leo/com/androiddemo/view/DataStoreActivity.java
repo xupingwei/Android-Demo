@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.Random;
-
 import example.leo.com.androiddemo.R;
 import example.leo.com.androiddemo.bean.Employees;
 import example.leo.com.androiddemo.utils.FileUtils;
@@ -113,12 +110,12 @@ public class DataStoreActivity extends Activity implements View.OnClickListener 
             int empId = cursor.getInt(0);
             // 先获取 name 的索引值，然后再通过索引获取字段值
             String empName = cursor.getString(cursor.getColumnIndex("name"));
-            stringBuilder.append("empId:"+empId+",");
-            stringBuilder.append("empName:"+empName+";");
+            stringBuilder.append("empId:" + empId + ",");
+            stringBuilder.append("empName:" + empName + ";");
         }
         // 关闭光标
         cursor.close();
-        return  stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
     // 构建 Employees 对象

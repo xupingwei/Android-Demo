@@ -13,10 +13,12 @@ import java.util.List;
 import adapter.MainAdapter;
 import example.leo.com.androiddemo.view.AnimationActivity;
 import example.leo.com.androiddemo.view.DataStoreActivity;
+import example.leo.com.androiddemo.view.FragmentDemoActivity;
 import example.leo.com.androiddemo.view.MapLocationActivity;
 import example.leo.com.androiddemo.view.MultimediaActivity;
 import example.leo.com.androiddemo.view.NetworkActivity;
 import example.leo.com.androiddemo.view.SensorMangerActivity;
+import example.leo.com.androiddemo.view.SystemAPIActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     //Fragment
                     case 1:
-//                        intent = new Intent(MainActivity.this,FragmentTest.class);
-//                        startActivity(intent);
+                        intent = new Intent(MainActivity.this,FragmentDemoActivity.class);
+                        startActivity(intent);
                         break;
                     //数据存储
                     case 2:
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     //系统API
                     case 6:
-//                        intent = new Intent(MainActivity.this,SystemAPIActivity.class);
-//                        startActivity(intent);
+                        intent = new Intent(MainActivity.this,SystemAPIActivity.class);
+                        startActivity(intent);
                         break;
                     //地图定位
                     case 7:
