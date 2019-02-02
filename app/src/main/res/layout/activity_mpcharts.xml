@@ -46,5 +46,19 @@
             android:layout_height="400dp"
             android:layout_margin="10dp"
             android:padding="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="饼状图" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="10dp"
+            android:padding="20dp" />
+
     </LinearLayout>
 </ScrollView>

@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
@@ -61,19 +62,12 @@ import example.leo.com.androiddemo.adapter.XAxisValueFormatter;
  * @Version: 1.0
  */
 public class MpChartsaActivity extends Activity implements OnChartValueSelectedListener {
-    private String[] mMonths = new String[]{
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"};
-    private String[] mParties = new String[]{
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
     private Typeface mTfRegular;
     private Typeface mTfLight;
     protected BarChart mChart;
     private HorizontalBarChart hBarChart;
     private LineChart lineChart;
+    private PieChart pieChart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,10 +80,12 @@ public class MpChartsaActivity extends Activity implements OnChartValueSelectedL
         mChart = findViewById(R.id.chart1);
         hBarChart = findViewById(R.id.hBarChart);
         lineChart = findViewById(R.id.lineChart);
+        pieChart = findViewById(R.id.pieChart);
 
         initBarChart();
         initHBarChart();
         initLineChart();
+        initPieChart();
 
     }
 
@@ -248,6 +244,39 @@ public class MpChartsaActivity extends Activity implements OnChartValueSelectedL
         lineChart.getAxisRight().setEnabled(false);
 
         setLineChartData();
+    }
+
+    /**
+     * 初始化饼状图数据
+     */
+    private void initPieChart(){
+        List<PieEntry> strings = new ArrayList<>();
+        strings.add(new PieEntry(30f,"aaa"));
+        strings.add(new PieEntry(70f,"bbb"));
+
+        PieDataSet dataSet = new PieDataSet(strings,"Label");
+
+        List<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.colorPrimary));
+        colors.add(getResources().getColor(R.color.blue));
+        dataSet.setColors(colors);
+
+        PieData pieData = new PieData(dataSet);
+        pieData.setDrawValues(true);
+        //将数字变成百分比
+        pieData.setValueFormatter(new PercentFormatter());
+        //设置字体大小
+        pieData.setValueTextSize(12f);
+        //设置数据
+        pieChart.setData(pieData);
+        //设置圆形图中孔旁边的透明圆半径
+        pieChart.setTransparentCircleRadius(0f);
+        //设置中心圆半径
+        pieChart.setHoleRadius(0f);
+        pieChart.invalidate();
+        Description description = new Description();
+        description.setText("这是描述");
+        pieChart.setDescription(description);
     }
 
     private float getRandom(float range, float startsfrom) {
