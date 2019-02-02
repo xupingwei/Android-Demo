@@ -26,6 +26,8 @@
         <activity android:name=".view.MapLocationActivity"></activity>
         <activity android:name=".view.FragmentDemoActivity"></activity>
         <activity android:name=".view.SystemAPIActivity"></activity>
+        <activity android:name=".view.MpChartsaActivity"></activity>
+
 
         <!--高德地图-->
         <meta-data
