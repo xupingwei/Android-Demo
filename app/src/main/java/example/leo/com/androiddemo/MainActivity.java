@@ -20,6 +20,7 @@ import example.leo.com.androiddemo.view.MultimediaActivity;
 import example.leo.com.androiddemo.view.NetworkActivity;
 import example.leo.com.androiddemo.view.SensorMangerActivity;
 import example.leo.com.androiddemo.view.SystemAPIActivity;
+import example.leo.com.androiddemo.view.WifiActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,8 +86,14 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this,SensorMangerActivity.class);
                         startActivity(intent);
                         break;
+                        //charts
                     case 9:
                         intent = new Intent(MainActivity.this,MpChartsaActivity.class);
+                        startActivity(intent);
+                        break;
+                        //wifi
+                    case 10:
+                        intent = new Intent(MainActivity.this,WifiActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -108,5 +115,7 @@ public class MainActivity extends AppCompatActivity {
        contentData.add("地图定位");
        contentData.add("SensorManger");
        contentData.add("charts");
+       contentData.add("wifi");
+
     }
 }

@@ -20,30 +20,32 @@
         <activity android:name=".view.AnimationActivity"></activity>
         <activity android:name=".view.MultimediaActivity"></activity>
         <activity android:name=".view.SensorMangerActivity"></activity>
-        <activity android:name=".view.VideoActivity"
+        <activity
+            android:name=".view.VideoActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".view.NetworkActivity"></activity>
         <activity android:name=".view.MapLocationActivity"></activity>
         <activity android:name=".view.FragmentDemoActivity"></activity>
         <activity android:name=".view.SystemAPIActivity"></activity>
         <activity android:name=".view.MpChartsaActivity"></activity>
-
+        <activity android:name=".view.WifiActivity"></activity>
 
         <!--高德地图-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="8fa1a5b6b58c37695551eac542695499"/>
+            android:value="8fa1a5b6b58c37695551eac542695499" />
     </application>
 
     <!--权限添加-->
     <!-- SDCard中创建与删除文件权限 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--录音权限-->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--相机权限-->
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -59,12 +61,22 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="true" />
-     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-
+    <!-- 以下是使用wifi访问网络所需的权限 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    //在程序中使用蓝牙功能
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    //启动设备发现或操纵蓝牙设置
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 </manifest>
