@@ -157,8 +157,9 @@ public class MapLocationActivity extends FragmentActivity implements
      * 显示进度框
      */
     private void showProgressDialog() {
-        if (progDialog == null)
+        if (progDialog == null) {
             progDialog = new ProgressDialog(this);
+        }
         progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progDialog.setIndeterminate(false);
         progDialog.setCancelable(false);

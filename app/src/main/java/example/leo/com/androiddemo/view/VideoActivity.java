@@ -1,7 +1,9 @@
 package example.leo.com.androiddemo.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -101,38 +105,6 @@ public class VideoActivity extends Activity implements View.OnClickListener {
         mSurfaceHolder.setKeepScreenOn(true);
         //回调接口
         mSurfaceHolder.addCallback(mSurfaceCallBack);
-//        svActivityVideo.getHolder().addCallback(new SurfaceHolder.Callback() {
-//            @Override
-//            public void surfaceCreated(SurfaceHolder holder) {
-//                //打开照相机
-//                camera = Camera.open();
-//                //设置Camera的角度/方向
-//                camera.setDisplayOrientation(90);
-//                //设置参数
-//                Camera.Parameters parameters = camera.getParameters();
-//                parameters.setPictureFormat(PixelFormat.JPEG);
-//                parameters.set("jpeg-quality", 85);
-//                camera.setParameters(parameters);
-//                //将画面展示到SurfaceView
-//                try {
-//                    camera.setPreviewDisplay(svActivityVideo.getHolder());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                //开启预览效果
-//                camera.startPreview();
-//            }
-//
-//            @Override
-//            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//
-//            }
-//
-//            @Override
-//            public void surfaceDestroyed(SurfaceHolder holder) {
-//                releaseCamera();
-//            }
-//        });
         //拍照
         btnActivityVideoCamera.setOnClickListener(this);
     }
@@ -143,13 +115,38 @@ public class VideoActivity extends Activity implements View.OnClickListener {
      * @param view
      */
     public void takePhoto(View view) {
+        if (camera == null) {
+            camera = Camera.open();
+            //将相机与SurfaceHolder绑定
+            try {
+                camera.setPreviewDisplay(mSurfaceHolder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //配置CameraParams
+            configCameraParams();
+            //启动相机预览
+            camera.startPreview();
+        }
         camera.takePicture(null, null, new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
                 //图片压缩
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 try {
-                    FileOutputStream fos = new FileOutputStream("/mnt/sdcard/androidDemoPic/test_" + System.currentTimeMillis() + ".png");
+                    String fileName = "/mnt/sdcard/androidDemoPic/test_" + System.currentTimeMillis() + ".png";
+                    File file = new File(fileName);
+                    if (!file.exists()) {
+                        //先得到文件的上级目录，并创建上级目录，在创建文件
+                        file.getParentFile().mkdir();
+                        try {
+                            //创建文件
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    FileOutputStream fos = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 85, fos);
                     camera.stopPreview();
                     camera.startPreview();
@@ -169,7 +166,15 @@ public class VideoActivity extends Activity implements View.OnClickListener {
         if (camera != null) {
             releaseCamera();
         }
-        camera = Camera.open();
+        // check Android 6 permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, 1);//1 can be another integer
+        }
+        //0表示后置摄像头，1表示前置摄像头
+        camera = Camera.open(0);
         if (camera == null) {
             Toast.makeText(this, "未能获取到相机！", Toast.LENGTH_SHORT).show();
             return;
@@ -194,7 +199,7 @@ public class VideoActivity extends Activity implements View.OnClickListener {
         if (camera != null) {
             camera.setPreviewCallback(null);
             camera.stopPreview();
-            camera.release();
+            camera.startPreview();
             camera = null;
         }
     }
@@ -234,9 +239,6 @@ public class VideoActivity extends Activity implements View.OnClickListener {
 
     /**
      * 设置摄像头为竖屏
-     *
-     * @author lip
-     * @date 2015-3-16
      */
     private void configCameraParams() {
         Camera.Parameters params = camera.getParameters();
@@ -346,6 +348,7 @@ public class VideoActivity extends Activity implements View.OnClickListener {
 
     /**
      * 创建视频名称
+     *
      * @return
      */
     private String getVideoName() {
