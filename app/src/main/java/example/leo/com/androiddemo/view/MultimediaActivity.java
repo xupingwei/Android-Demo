@@ -16,13 +16,18 @@ import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import example.leo.com.androiddemo.R;
+import example.leo.com.androiddemo.bean.Video;
+import example.leo.com.androiddemo.utils.FileManager;
 import example.leo.com.androiddemo.utils.ToastUtil;
 
 /**
@@ -42,8 +47,6 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
     private Button btnActivityMultimediaRecorderstart;
     private Button btnActivityMultimediaRecorderplay;
     private Button btnActivityMultimediaVideoplay;
-    private Button btnActivityMultimediaVideopause;
-    private Button btnActivityMultimediaVideostop;
     //线程操作
     private ExecutorService mExecutorService;
     //录音API
@@ -58,22 +61,26 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
     private volatile boolean isPlaying;
     //播放音频文件API
     private MediaPlayer mediaPlayer;
+    VideoView videoView;
+    private FileManager fileManager;
+    private List<Video> videoList;
 
     //使用Handler更新UI线程
     private Handler mHandler = new Handler() {
         ToastUtil toastUtil;
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
                     //录音成功
-                     toastUtil = new ToastUtil(MultimediaActivity.this, R.layout.toast_center, "录音成功");
+                    toastUtil = new ToastUtil(MultimediaActivity.this, R.layout.toast_center, "录音成功");
                     toastUtil.show();
                     break;
                 //录音失败
                 case 2:
-                     toastUtil = new ToastUtil(MultimediaActivity.this, R.layout.toast_center, getString(R.string.record_fail));
+                    toastUtil = new ToastUtil(MultimediaActivity.this, R.layout.toast_center, getString(R.string.record_fail));
                     toastUtil.show();
                     break;
                 //录音时间太短
@@ -132,8 +139,9 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
         btnActivityMultimediaRecorderstart = findViewById(R.id.btn_activity_multimedia_recorderstart);
         btnActivityMultimediaRecorderplay = findViewById(R.id.btn_activity_multimedia_recorderplay);
         btnActivityMultimediaVideoplay = findViewById(R.id.btn_activity_multimedia_videoplay);
-        btnActivityMultimediaVideopause = findViewById(R.id.btn_activity_multimedia_videopause);
-        btnActivityMultimediaVideostop = findViewById(R.id.btn_activity_multimedia_videostop);
+        videoView = findViewById(R.id.videoView);
+        fileManager = FileManager.getInstance(this);
+        videoList = fileManager.getVideos();
     }
 
     private void setOnclick() {
@@ -141,8 +149,6 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
         btnActivityMultimediaRecorderstart.setOnClickListener(this);
         btnActivityMultimediaRecorderplay.setOnClickListener(this);
         btnActivityMultimediaVideoplay.setOnClickListener(this);
-        btnActivityMultimediaVideopause.setOnClickListener(this);
-        btnActivityMultimediaVideostop.setOnClickListener(this);
     }
 
     @Override
@@ -150,7 +156,7 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
         switch (v.getId()) {
             //拍照
             case R.id.btn_activity_multimedia_camera:
-                Intent intent = new Intent(this,VideoActivity.class);
+                Intent intent = new Intent(this, VideoActivity.class);
                 startActivity(intent);
                 break;
             //开始录音
@@ -162,22 +168,24 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
                 break;
             //视频播放
             case R.id.btn_activity_multimedia_videoplay:
-                break;
-            //视频暂停
-            case R.id.btn_activity_multimedia_videopause:
-                break;
-            //视频停止
-            case R.id.btn_activity_multimedia_videostop:
+                if (videoList.size() > 0) {
+//                    String videoUrl = Environment.getExternalStorageDirectory().getPath()+"/fl1234.mp4" ;
+                    String videoUrl = videoList.get(0).getPath();
+                    //设置视频控制器
+                    videoView.setMediaController(new MediaController(this));
+                    //播放完成回调
+                    videoView.setOnCompletionListener(new MyPlayerOnCompletionListener());
+                    //设置视频路径
+                    videoView.setVideoPath(videoUrl);
+                    //开始播放视频
+                    videoView.start();
+                } else {
+                    ToastUtil.show(this, "没有视频文件");
+                }
                 break;
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //页面销毁，线程要关闭
-        mExecutorService.shutdownNow();
-    }
 
     /*******6.0以上版本手机权限处理***************************/
     /**
@@ -366,6 +374,46 @@ public class MultimediaActivity extends Activity implements View.OnClickListener
             mediaPlayer.reset();
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!videoView.isPlaying()) {
+            videoView.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (videoView.canPause()) {
+            videoView.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //页面销毁，线程要关闭
+        mExecutorService.shutdownNow();
+        stopPlaybackVideo();
+    }
+
+    private void stopPlaybackVideo() {
+        try {
+            videoView.stopPlayback();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
+
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            ToastUtil.show(MultimediaActivity.this, "播放完成了");
         }
     }
 }

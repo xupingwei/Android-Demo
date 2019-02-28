@@ -48,4 +48,7 @@ dependencies {
     //    implementation 'com.amap.api:search:latest.integration'
     //MPAndroidCharts集成
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    implementation files('libs/pinyin4j-2.5.0.jar')
+    //拼音转汉字库
+//    implementation 'com.github.open-android:pinyin4j:2.5.0'
 }

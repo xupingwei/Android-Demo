@@ -27,26 +27,20 @@ import java.util.List;
  */
 public final class VideoUtils {
     public static void startTrim(File src, File dst, int startMs, int endMs) throws IOException {
-
         //ReadableByteChannel in = Channels.newChannel((new FileInputStream(src)));
         Movie movie = MovieCreator.build(src.getAbsolutePath());
         //RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
-
         //DataSource ds = DataSource.
         //Movie movie = MovieCreator.build("D:\\Mp4\\test.mp4");//randomAccessFile.getChannel()
-
         // remove all tracks we will create new tracks from the old
         List<Track> tracks = movie.getTracks();
         movie.setTracks(new LinkedList<Track>());
 //        for (Track track : tracks) {
 //            printTime(track);
 //        }
-
-        double startTime = startMs/1000;
-        double endTime = endMs/1000;
-
+        double startTime = startMs / 1000;
+        double endTime = endMs / 1000;
         boolean timeCorrected = false;
-
         // Here we try to find a track that has sync samples. Since we can only start decoding
         // at such a sample we SHOULD make sure that the start of the new fragment is exactly
         // such a frame
@@ -64,8 +58,8 @@ public final class VideoUtils {
                 timeCorrected = true;
             }
         }
-        System.out.println("trim startTime-->"+startTime);
-        System.out.println("trim endTime-->"+endTime);
+        System.out.println("trim startTime-->" + startTime);
+        System.out.println("trim endTime-->" + endTime);
         int x = 0;
         for (Track track : tracks) {
             long currentSample = 0;
@@ -73,8 +67,6 @@ public final class VideoUtils {
             long startSample = -1;
             long endSample = -1;
             x++;
-
-
             for (int i = 0; i < track.getDecodingTimeEntries().size(); i++) {
                 TimeToSampleBox.Entry entry = track.getDecodingTimeEntries().get(i);
                 for (int j = 0; j < entry.getCount(); j++) {
@@ -95,41 +87,30 @@ public final class VideoUtils {
                     currentSample++;
                 }
             }
-
-
-            System.out.println("trim startSample-->"+startSample);
-            System.out.println("trim endSample-->"+endSample);
+            System.out.println("trim startSample-->" + startSample);
+            System.out.println("trim endSample-->" + endSample);
             movie.addTrack(new CroppedTrack(track, startSample, endSample));
 //            break;
         }
-
-
         //movie.addTrack(new CroppedTrack(track, startSample, endSample));
-
         //IsoFile out = (IsoFile) new DefaultMp4Builder().build(movie);
         Container container = new DefaultMp4Builder().build(movie);
-
-
         if (!dst.exists()) {
             dst.createNewFile();
         }
-
         FileOutputStream fos = new FileOutputStream(dst);
         FileChannel fc = fos.getChannel();
         //out.getBox(fc);  // This one build up the memory.
         container.writeContainer(fc);
-
         fc.close();
         fos.close();
         //randomAccessFile.close();
     }
 
-
-    public static void appendVideo(Context context,String saveVideoPath,String[] videos) throws IOException{
+    public static void appendVideo(Context context, String saveVideoPath, String[] videos) throws IOException {
         Movie[] inMovies = new Movie[videos.length];
         int index = 0;
-        for(String video:videos)
-        {
+        for (String video : videos) {
             inMovies[index] = MovieCreator.build(video);
             index++;
         }
@@ -146,10 +127,8 @@ public final class VideoUtils {
                 }
             }
         }
-
         // 合并到最终的视频文件
         Movie result = new Movie();
-
         if (audioTracks.size() > 0) {
             result.addTrack(new AppendTrack(audioTracks.toArray(new Track[audioTracks.size()])));
         }
@@ -202,6 +181,7 @@ public final class VideoUtils {
 
     /**
      * 获取视频宽高（分辨率）
+     *
      * @param path
      * @return
      */
@@ -236,16 +216,16 @@ public final class VideoUtils {
 
         // System.out.println("size-->"+currentSample);
 		*//*
-		 * for(int i=0;i<timeOfSyncSamples.length;i++){
-		 * System.out.println("data-->"+timeOfSyncSamples[i]); }
-		 *//*
+     * for(int i=0;i<timeOfSyncSamples.length;i++){
+     * System.out.println("data-->"+timeOfSyncSamples[i]); }
+     *//*
 
-		*//*
-		 * double previous = 0; for (double timeOfSyncSample :
-		 * timeOfSyncSamples) { if (timeOfSyncSample > cutHere) { if (next) {
-		 * return timeOfSyncSample; } else { return previous; } } previous =
-		 * timeOfSyncSample; } return timeOfSyncSamples[timeOfSyncSamples.length
-		 * - 1];
-		 *//*
+     *//*
+     * double previous = 0; for (double timeOfSyncSample :
+     * timeOfSyncSamples) { if (timeOfSyncSample > cutHere) { if (next) {
+     * return timeOfSyncSample; } else { return previous; } } previous =
+     * timeOfSyncSample; } return timeOfSyncSamples[timeOfSyncSamples.length
+     * - 1];
+     *//*
     }*/
 }

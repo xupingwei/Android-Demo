@@ -38,21 +38,10 @@
             android:layout_height="wrap_content"
             android:text="视频播放" />
 
-        <Button
-            android:id="@+id/btn_activity_multimedia_videopause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="视频暂停" />
-
-        <Button
-            android:id="@+id/btn_activity_multimedia_videostop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="视频停止" />
     </LinearLayout>
 
-    <SurfaceView
-        android:id="@+id/sv_ractivity_multimedia"
+    <VideoView
+        android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
